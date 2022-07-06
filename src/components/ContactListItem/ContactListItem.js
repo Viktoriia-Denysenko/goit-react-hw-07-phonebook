@@ -1,15 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import s from './ContactListItem.module.css';
-import { useDispatch } from 'react-redux';
-import { remove } from '../../redux/contactsReducer';
+import { useDeleteContactsMutation } from '../../redux/contactSlice';
 
 const ContactListItem = ({ id, name, number }) => {
-  const dispatch = useDispatch();
-
-  const deleteContact = contactId => {
-    dispatch(remove(contactId));
-  };
+  const [deleteContact] = useDeleteContactsMutation();
 
   return (
     <li className={s.listItem}>

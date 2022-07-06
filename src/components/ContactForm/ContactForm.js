@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import s from './ContactForm.module.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { add, getContacts } from '../../redux/contactsReducer';
-import { nanoid } from 'nanoid';
+import {
+  useCreateContactsMutation,
+  useFetchContactsQuery,
+} from '../../redux/contactSlice';
 
 function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const contacts = useSelector(getContacts);
+  const { data } = useFetchContactsQuery();
 
-  const dispatch = useDispatch();
+  const [createContact] = useCreateContactsMutation();
 
   const handleChange = event => {
     const { name, value } = event.currentTarget;
@@ -31,20 +32,20 @@ function ContactForm() {
   const handleSubmit = event => {
     event.preventDefault();
     const contact = {
-      id: nanoid(),
+      id: data.id,
       name,
       number,
     };
 
     const getSameName = name => {
-      return contacts.find(
+      return data.find(
         contact => contact.name.toLowerCase() === name.toLowerCase()
       );
     };
 
     getSameName(contact.name)
       ? alert(`${contact.name} is already in contacts.`)
-      : dispatch(add(contact));
+      : createContact(contact);
 
     reset();
   };
@@ -57,7 +58,7 @@ function ContactForm() {
   return (
     <>
       <form className={s.form} onSubmit={handleSubmit}>
-        <label className={s.label}>Name </label>
+        <label className={s.label}>Name</label>
         <input
           className={s.input}
           value={name}
