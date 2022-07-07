@@ -45,9 +45,7 @@ function ContactForm() {
 
     getSameName(contact.name)
       ? alert(`${contact.name} is already in contacts.`)
-      : createContact(contact);
-
-    reset();
+      : createContact(contact) && reset();
   };
 
   const reset = () => {
