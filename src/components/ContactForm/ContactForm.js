@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { nanoid } from 'nanoid';
 import s from './ContactForm.module.css';
 import {
   useCreateContactsMutation,
@@ -32,7 +33,7 @@ function ContactForm() {
   const handleSubmit = event => {
     event.preventDefault();
     const contact = {
-      id: data.id,
+      id: nanoid(),
       name,
       number,
     };
